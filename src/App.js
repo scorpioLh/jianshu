@@ -9,11 +9,11 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-				<Provider store={store}>
-					<GlobalStyle/>
-					<GlobalIconfont/>
-					<Header />
-				</Provider>
+        <Provider store={store}>
+            <GlobalStyle/>
+            <GlobalIconfont/>
+            <Header />
+        </Provider>
       </Fragment>
     );
   }
