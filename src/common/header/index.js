@@ -28,7 +28,10 @@ class Header extends Component {
 				>
 					<SearchInfoTitle>
 						热门搜索
-						<SearchInfoSwitch onClick={() => handleChangePage(page, totalPage)}>换一批</SearchInfoSwitch>
+						<SearchInfoSwitch onClick={() => handleChangePage(page, totalPage, this.spinIcon)}>
+							<span ref={(icon) => {this.spinIcon = icon}} className="iconfont spin">&#xe61b;</span>
+							换一批
+						</SearchInfoSwitch>
 					</SearchInfoTitle>
 					<SearchInfoList>
 						{pageList}
@@ -41,7 +44,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { focused, handleInputFocus, handleInputBlur } = this.props
+		const { focused, handleInputFocus, handleInputBlur, list } = this.props
 		return (
 			<HeaderWrapper>
 				<Logo href="/" />
@@ -60,11 +63,11 @@ class Header extends Component {
 						>
 							<NavSearch
 								className={focused ? 'focused' : ''}
-								onFocus={handleInputFocus}
+								onFocus={() => handleInputFocus(list)}
 								onBlur={handleInputBlur}
 							/>
 						</CSSTransition>
-						<span className={focused ? 'focused iconfont' : 'iconfont'}>&#xe603;</span>
+						<span className={focused ? 'focused iconfont zoom' : 'iconfont zoom'}>&#xe603;</span>
 						{
 							this.getListArea()
 						}
@@ -92,8 +95,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleInputFocus() {
-			dispatch(actionCreators.getList())
+		handleInputFocus(list) {
+			if (list.size === 0) {
+				dispatch(actionCreators.getList())
+			}
 			dispatch(actionCreators.searchFocus())
 		},
 		handleInputBlur() {
@@ -105,7 +110,15 @@ const mapDispatchToProps = (dispatch) => {
 		handleMouseLeave() {
 			dispatch(actionCreators.mouseLeave())
 		},
-		handleChangePage(page, totalPage) {
+		handleChangePage(page, totalPage, spin) {
+			let originAngle = spin.style.transform.replace(/[^0-9]/ig, '')
+			if (originAngle) {
+				originAngle = parseInt(originAngle, 10)
+			} else {
+				originAngle = 0
+			}
+			spin.style.transform = `rotate(${originAngle}360deg)`
+
 			if (page < totalPage) {
 				dispatch(actionCreators.changePage(page + 1))
 			} else {
