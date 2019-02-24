@@ -13,17 +13,15 @@ class App extends Component {
     return (
       <Fragment>
         <Provider store={store}>
-          <div>
-            <GlobalStyle/>
-            <GlobalIconfont/>
-            <Header />
-            <BrowserRouter>
-              <div>
-                <Route path='/' exact component={Home}></Route>
-                <Route path='/detail' exact component={Detail}></Route>
-              </div>
-            </BrowserRouter>
-          </div>
+          <GlobalStyle/>
+          <GlobalIconfont/>
+          <BrowserRouter>
+            <div>
+              <Header />
+              <Route path='/' exact component={Home}></Route>
+              <Route path='/detail' exact component={Detail}></Route>
+            </div>
+          </BrowserRouter>
         </Provider>
       </Fragment>
     );
